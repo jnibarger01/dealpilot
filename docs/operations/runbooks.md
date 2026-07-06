@@ -1,0 +1,49 @@
+# DealPilot — Operational Runbooks
+Status: Living · Owner: Head of Platform (each RB has a named owner) · Rules: every alert links a runbook (`../architecture/observability.md` §9); every chaos scenario maps to one (`../engineering/testing.md` §6); drills keep them honest — an unrehearsed runbook is a rumor.
+
+**Format (all RBs):** *Symptom → Impact → Diagnose → Mitigate → Verify → Escalate → Prevent.* Commands live in the ops repo (`/ops/rb/*`); this doc is the decision layer.
+
+---
+
+## RB-01 Verification Pipeline Stuck (queue age climbing)
+**Symptom:** Temporal task-queue age > 5 min alert; runs pinned in a state. **Impact:** latency SLO burn; credits held. **Diagnose:** Temporal UI → which activity class is starved (worker crashloop? poison task? provider hang masked as retries?); check worker pod events + last deploy. **Mitigate:** poison task → terminate that workflow (auto-refunds credit via `RunFailed` event); worker regression → rollback via Argo (< 10 min, `../engineering/ci-cd.md` §5); starvation → scale worker pool (HPA override). **Verify:** queue age draining; synthetic run completes. **Escalate:** > 30 min or > 100 runs affected → SEV-2. **Prevent:** poison-task signature added to validation + a fixture.
+
+## RB-02 Model Provider Outage / Degradation
+**Symptom:** provider p95 ×3 or error > 5% (15 min). **Impact:** run latency; potential quality dip. **Diagnose:** provider status page; confirm across ≥2 task types (rule out our prompt regression — check last `/prompts` deploy). **Mitigate:** flip routing kill-switch flag → secondary provider (`../architecture/ai-architecture.md` §7); if both degraded: pause new runs (fail-closed banner "verification paused — we don't degrade to guessing"), queue holds. **Verify:** cross-provider eval canary passes on secondary (auto-runs on failover); latency recovering. **Escalate:** dual-provider outage > 1 h → SEV-2 + status page. **Prevent:** weekly cross-provider evals keep the secondary honest.
+
+## RB-03 Evidence Source Quota Exhausted / Revoked (Risk R-2)
+**Symptom:** tier-A adapter failure > 20% (30 min). **Impact:** claims that need this source land UNKNOWN — quality degrades honestly, not silently. **Diagnose:** quota (429s) vs auth (401 — contract issue?) vs schema drift (adapter parse errors). **Mitigate:** quota → throttle per-tenant + prioritize paid tiers, buy burst if contract allows; revocation → flip source flag off, UI shows "source unavailable" on affected claim types (users see *why* UNKNOWNs rose); schema drift → adapter hotfix lane. **Verify:** failure rate < 2%; UNKNOWN-rate drift alarm clears. **Escalate:** tier-A revocation → SEV-2 + Evidence Lead owns vendor call within 4 h + exec notified (register R-2). **Prevent:** per-source exit plans, second-source roadmap per claim class.
+
+## RB-04 Citation-Check Failure Spike
+**Symptom:** pass rate < 88% (1 h). **Impact:** memos blocked → human queue floods; latency. **Diagnose:** correlate with last prompt/model/rubric deploy (it is almost always this); check composer output samples. **Mitigate:** auto-rollback should have fired (`../engineering/ci-cd.md` §5) — if canary gates were overridden, revert now; drain blocked-memo queue via recompose batch after fix. **Verify:** pass ≥ 92%; queue < 20. **Escalate:** not deploy-correlated (novel input pattern?) → quality on-call + Head of AI; possible T-1 injection wave → security. **Prevent:** the override that bypassed the gate gets a retro; gates exist for this exact hour.
+
+## RB-05 Projector Lag / Read-Model Corruption
+**Symptom:** lag p95 > 5 s (ticket) / > 30 s (page); or consistency sampler mismatch. **Diagnose:** projector error loop (poison event? upcaster gap?) vs throughput. **Mitigate:** lag → scale projector, check hot partition; corruption/mismatch → **rebuild from stream** (checkpointed; per-view rebuild ≈ 20 min/10M events — drilled quarterly); UI serves stale-with-banner during rebuild. **Verify:** sampler green; lag < 2 s. **Prevent:** event schema change without upcaster test = the usual culprit; add the missing contract test.
+
+## RB-06 ⚠️ Ledger Chain Verification Failure — **auto-SEV-1**
+**Symptom:** continuous verifier (hourly/weekly job) reports chain break at seq N. **Impact:** integrity promise in question — existential class (R-1 adjacent). **Diagnose (do not "fix" anything yet — preserve everything):** snapshot DB + WAL immediately; is it (a) verifier/env bug, (b) storage corruption, (c) tampering? Compare against off-site anchored chain heads (`../architecture/threat-model.md` §3); check DB audit log for any UPDATE/DELETE on ledger tables (grants make this near-impossible — presence = incident escalates to security). **Mitigate:** (a) fix verifier, re-run, document; (b) restore affected partition from PITR to pre-corruption point, replay outbox, re-verify full chain; (c) → `incident-response.md` VI-SEV protocol *now*, counsel + CEO in loop. **Verify:** full-chain verification green with the **OSS build** (not internal code). **Escalate:** already SEV-1 by definition; disclosure per VI doctrine. **Prevent:** whatever class occurred gets a conformance vector + monitor.
+
+## RB-07 Data Deletion Request (DSAR erasure)
+**Symptom:** ticket via privacy@ / in-app (SLA clock starts: 30 d GDPR / 45 d CCPA — `../legal/privacy.md` §5). **Steps:** verify identity (proportional) → classify (account holder vs third-party-in-content → route to controlling customer per DPA) → execute: account data hard-delete; Customer Content per org instruction; **ledger PII → crypto-shred (destroy per-subject keys)** (`../legal/privacy.md` §6); confirm backups cycle (35 d note in confirmation) → send deletion confirmation + certificate on request → ledger the completion event (deletion is itself auditable — without the deleted data). **Drill:** semi-annual (`../legal/compliance.md` §9).
+
+## RB-08 Key Rotation (scheduled & emergency)
+Scheduled per matrix (`../architecture/security.md` §6) — vault-driven, dual-publish overlap, zero-downtime; checklist per key class in ops repo. **Emergency (suspected compromise):** rotate first, investigate second; API-key class → freeze + customer notice with re-issue flow; JWT signing → immediate JWKS cut + session invalidation decision (CEO call if it logs out all users); model-provider keys → rotate + review egress logs for exfil window. Every rotation is a ledger event; every emergency rotation gets a postmortem.
+
+## RB-09 Stripe Webhook Backlog / Billing Drift
+**Symptom:** backlog > 100 (15 min) or nightly reconciliation diff ≠ 0 (`../business/pricing.md`). **Diagnose:** our 5xx on webhook endpoint vs Stripe delay; reconciliation diff → which object class (subscription state? credit grant?). **Mitigate:** replay from Stripe event log (idempotent handlers make replay safe — that's why they're idempotent); entitlement drift → entitlement state machine re-sync job; **never hand-edit entitlements** — fix via events so the audit trail stays true. **Verify:** reconciliation zero; backlog drained. **Escalate:** customer-visible wrong charges → SEV-2 + proactive credits per make-good policy.
+
+## RB-10 Credit Ledger Discrepancy
+**Symptom:** invariant alarm (balance ≠ fold(events)) — should be near-impossible; treat as data-integrity S1-class. **Steps:** freeze credit mutations for affected org (flag), replay stream to locate divergence event, root-cause (projector bug vs — worse — direct write), correct via **compensating event** (never mutation), unfreeze, customer make-good if they were shorted (generous, fast, ledgered). Cross-check RB-06 territory if direct-write evidence appears.
+
+## RB-11 Postgres Failover / DR Activation
+**Failover (in-region):** RDS Multi-AZ auto; our job = verify (writes < 60 s recovery, replication lag drain, PgBouncer reconnect storm settled), then **chain-verify recent segments** before declaring healthy. **DR (region loss):** declare via `incident-response.md` (SEV-1), execute restore order from `../architecture/infrastructure.md` §9 — Postgres PITR → **full ledger chain verification** → CAS reconcile → read-model rebuild → Temporal resume → synthetic run green → traffic cutover. RTO 4 h / RPO 15 min; a restore failing chain verification is a failed restore (integrity > availability). Drilled quarterly, timed, board-reported.
+
+## RB-12 UNKNOWN-Rate Drift (quality regression)
+**Symptom:** ±5 pt vs 28-d baseline, 3 h sustained (quality page). **Diagnose (in order of base rate):** source degradation (→ RB-03), prompt/model deploy (→ RB-04 pattern), input-mix shift (new deal type wave? marketing campaign?), genuine world change (a registry went dark). **Mitigate:** per cause; input-mix → no action but annotate dashboards (drift ≠ defect when the world moved); never "fix" by loosening rubric thresholds under time pressure — rubric changes go through G4 gates, full stop. **Verify:** rate re-enters band or new baseline is deliberately re-pinned with Head-of-AI sign-off.
+
+## RB-13 CAS / Evidence Store Unavailable (S3 errors)
+**Symptom:** S3 5xx/latency on evidence reads/writes. **Impact:** runs pause fail-closed (no evidence → no adjudication → no guessing); memo evidence links degrade to hash-only display. **Mitigate:** confirm AWS scope (status page); writes → runs queue-hold with honest UI banner; reads → serve from CAS cache tier where warm; region event → RB-11 DR decision tree. **Verify:** reconciler clean post-recovery (no orphan events). **Prevent:** none needed beyond posture — this RB exists to stop anyone "helpfully" bypassing evidence requirements during an outage.
+
+---
+
+**Drill calendar:** each RB rehearsed ≥ annually (RB-06, RB-11 quarterly); drill = junior-most qualified person executes while owner observes; gaps found → RB edited same week. New service PR checklist requires: which RB covers your failure modes, or write the new one (`../architecture/observability.md` §9).

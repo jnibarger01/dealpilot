@@ -1,0 +1,348 @@
+{
+  "tar": "/home/jacen/.hermes/cache/documents/doc_0387f73d3854_dealpilot-docs.tar",
+  "extract": "/home/jacen/dealpilot/review-inputs/2026-07-06-updated/extracted",
+  "errors": [],
+  "members": [
+    {
+      "name": "dealpilot",
+      "type": "dir",
+      "size": 0,
+      "unsafe": false
+    },
+    {
+      "name": "dealpilot/README.md",
+      "type": "file",
+      "size": 2763,
+      "unsafe": false
+    },
+    {
+      "name": "dealpilot/tools",
+      "type": "dir",
+      "size": 0,
+      "unsafe": false
+    },
+    {
+      "name": "dealpilot/tools/lint-docs.sh",
+      "type": "file",
+      "size": 1925,
+      "unsafe": false
+    },
+    {
+      "name": "dealpilot/docs",
+      "type": "dir",
+      "size": 0,
+      "unsafe": false
+    },
+    {
+      "name": "dealpilot/docs/investor",
+      "type": "dir",
+      "size": 0,
+      "unsafe": false
+    },
+    {
+      "name": "dealpilot/docs/investor/due-diligence.md",
+      "type": "file",
+      "size": 7281,
+      "unsafe": false
+    },
+    {
+      "name": "dealpilot/docs/investor/fundraising.md",
+      "type": "file",
+      "size": 5704,
+      "unsafe": false
+    },
+    {
+      "name": "dealpilot/docs/investor/cap-table.md",
+      "type": "file",
+      "size": 4834,
+      "unsafe": false
+    },
+    {
+      "name": "dealpilot/docs/investor/pitch-deck.md",
+      "type": "file",
+      "size": 8138,
+      "unsafe": false
+    },
+    {
+      "name": "dealpilot/docs/business",
+      "type": "dir",
+      "size": 0,
+      "unsafe": false
+    },
+    {
+      "name": "dealpilot/docs/business/business-plan.md",
+      "type": "file",
+      "size": 9180,
+      "unsafe": false
+    },
+    {
+      "name": "dealpilot/docs/business/review-response.md",
+      "type": "file",
+      "size": 18666,
+      "unsafe": false
+    },
+    {
+      "name": "dealpilot/docs/business/sales.md",
+      "type": "file",
+      "size": 3566,
+      "unsafe": false
+    },
+    {
+      "name": "dealpilot/docs/business/marketing.md",
+      "type": "file",
+      "size": 5931,
+      "unsafe": false
+    },
+    {
+      "name": "dealpilot/docs/business/financial-model.md",
+      "type": "file",
+      "size": 17993,
+      "unsafe": false
+    },
+    {
+      "name": "dealpilot/docs/business/pricing.md",
+      "type": "file",
+      "size": 4304,
+      "unsafe": false
+    },
+    {
+      "name": "dealpilot/docs/business/executive-summary.md",
+      "type": "file",
+      "size": 10323,
+      "unsafe": false
+    },
+    {
+      "name": "dealpilot/docs/business/risk-register.md",
+      "type": "file",
+      "size": 16509,
+      "unsafe": false
+    },
+    {
+      "name": "dealpilot/docs/business/market-research.md",
+      "type": "file",
+      "size": 10292,
+      "unsafe": false
+    },
+    {
+      "name": "dealpilot/docs/business/fundraising.md",
+      "type": "file",
+      "size": 2537,
+      "unsafe": false
+    },
+    {
+      "name": "dealpilot/docs/legal",
+      "type": "dir",
+      "size": 0,
+      "unsafe": false
+    },
+    {
+      "name": "dealpilot/docs/legal/tos.md",
+      "type": "file",
+      "size": 6422,
+      "unsafe": false
+    },
+    {
+      "name": "dealpilot/docs/legal/privacy.md",
+      "type": "file",
+      "size": 6243,
+      "unsafe": false
+    },
+    {
+      "name": "dealpilot/docs/legal/compliance.md",
+      "type": "file",
+      "size": 7884,
+      "unsafe": false
+    },
+    {
+      "name": "dealpilot/docs/roadmap",
+      "type": "dir",
+      "size": 0,
+      "unsafe": false
+    },
+    {
+      "name": "dealpilot/docs/roadmap/v1.md",
+      "type": "file",
+      "size": 5288,
+      "unsafe": false
+    },
+    {
+      "name": "dealpilot/docs/roadmap/enterprise.md",
+      "type": "file",
+      "size": 6323,
+      "unsafe": false
+    },
+    {
+      "name": "dealpilot/docs/roadmap/mvp.md",
+      "type": "file",
+      "size": 6005,
+      "unsafe": false
+    },
+    {
+      "name": "dealpilot/docs/operations",
+      "type": "dir",
+      "size": 0,
+      "unsafe": false
+    },
+    {
+      "name": "dealpilot/docs/operations/runbooks.md",
+      "type": "file",
+      "size": 10056,
+      "unsafe": false
+    },
+    {
+      "name": "dealpilot/docs/operations/incident-response.md",
+      "type": "file",
+      "size": 6916,
+      "unsafe": false
+    },
+    {
+      "name": "dealpilot/docs/operations/hiring.md",
+      "type": "file",
+      "size": 6288,
+      "unsafe": false
+    },
+    {
+      "name": "dealpilot/docs/engineering",
+      "type": "dir",
+      "size": 0,
+      "unsafe": false
+    },
+    {
+      "name": "dealpilot/docs/engineering/testing.md",
+      "type": "file",
+      "size": 5655,
+      "unsafe": false
+    },
+    {
+      "name": "dealpilot/docs/engineering/tdd.md",
+      "type": "file",
+      "size": 8521,
+      "unsafe": false
+    },
+    {
+      "name": "dealpilot/docs/engineering/coding-standards.md",
+      "type": "file",
+      "size": 6334,
+      "unsafe": false
+    },
+    {
+      "name": "dealpilot/docs/engineering/api.md",
+      "type": "file",
+      "size": 7965,
+      "unsafe": false
+    },
+    {
+      "name": "dealpilot/docs/engineering/ci-cd.md",
+      "type": "file",
+      "size": 4954,
+      "unsafe": false
+    },
+    {
+      "name": "dealpilot/docs/product",
+      "type": "dir",
+      "size": 0,
+      "unsafe": false
+    },
+    {
+      "name": "dealpilot/docs/product/ux.md",
+      "type": "file",
+      "size": 3772,
+      "unsafe": false
+    },
+    {
+      "name": "dealpilot/docs/product/prd.md",
+      "type": "file",
+      "size": 10465,
+      "unsafe": false
+    },
+    {
+      "name": "dealpilot/docs/product/roadmap.md",
+      "type": "file",
+      "size": 3390,
+      "unsafe": false
+    },
+    {
+      "name": "dealpilot/docs/product/personas.md",
+      "type": "file",
+      "size": 4955,
+      "unsafe": false
+    },
+    {
+      "name": "dealpilot/docs/architecture",
+      "type": "dir",
+      "size": 0,
+      "unsafe": false
+    },
+    {
+      "name": "dealpilot/docs/architecture/infrastructure.md",
+      "type": "file",
+      "size": 9756,
+      "unsafe": false
+    },
+    {
+      "name": "dealpilot/docs/architecture/evidence-fallback-map.md",
+      "type": "file",
+      "size": 6008,
+      "unsafe": false
+    },
+    {
+      "name": "dealpilot/docs/architecture/security.md",
+      "type": "file",
+      "size": 7728,
+      "unsafe": false
+    },
+    {
+      "name": "dealpilot/docs/architecture/system-design.md",
+      "type": "file",
+      "size": 13941,
+      "unsafe": false
+    },
+    {
+      "name": "dealpilot/docs/architecture/ai-architecture.md",
+      "type": "file",
+      "size": 25954,
+      "unsafe": false
+    },
+    {
+      "name": "dealpilot/docs/architecture/observability.md",
+      "type": "file",
+      "size": 6202,
+      "unsafe": false
+    },
+    {
+      "name": "dealpilot/docs/architecture/threat-model.md",
+      "type": "file",
+      "size": 7550,
+      "unsafe": false
+    }
+  ],
+  "standalone": {
+    "architecture/ai-architecture.md": {
+      "path": "/home/jacen/.hermes/cache/documents/doc_8d685dd56ee8_dealpilot-ai-architecture.md",
+      "exists": true,
+      "sha256": "51fb2a492a6919c4248386317b7fd50ca5a5af1254d0f81a0716cea4c6b5fdf8",
+      "tar_candidates": []
+    },
+    "business/financial-model.md": {
+      "path": "/home/jacen/.hermes/cache/documents/doc_05e6bb4f674b_dealpilot-financial-model.md",
+      "exists": true,
+      "sha256": "a6a98192f3a520d10a89c3f898827608480ec9088b7a81a276cb945b3afa5719",
+      "tar_candidates": []
+    },
+    "architecture/evidence-fallback-map.md": {
+      "path": "/home/jacen/.hermes/cache/documents/doc_9ddf532865bd_dealpilot-evidence-fallback-map.md",
+      "exists": true,
+      "sha256": "e518ecb6d24a59ba13627ad734d67b10a4a602dcdbab5b2b9d3b8eef71823329",
+      "tar_candidates": []
+    },
+    "business/review-response.md": {
+      "path": "/home/jacen/.hermes/cache/documents/doc_5b58a47347b1_dealpilot-review-response.md",
+      "exists": true,
+      "sha256": "2bea2c68af6186ccc3f219d7922987ad5bf8d01a1edfff59ca721e2714e2e780",
+      "tar_candidates": []
+    }
+  },
+  "tar_sha256": "e3505f5ddc44e2c8e7ad3c22527aca902ce1f711ce9f17c2415282a5b88f401d",
+  "file_count": 41,
+  "dir_count": 11
+}

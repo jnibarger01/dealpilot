@@ -1,0 +1,207 @@
+{
+  "timestamp_utc": "2026-07-06T18:41:38Z",
+  "destination": "/home/jacen/dealpilot",
+  "source_tar_sha256": "182da64b70665fce667cfe24aa979b11c655407f10aebd245b7eb219f75666fd",
+  "source_review_sha256": "b8eef3c7f61030d63a1c0ff9dd6abeee7435c853265fa1ff51e362e4fc32ad0a",
+  "extracted": [
+    {
+      "path": "README.md",
+      "bytes": 2764,
+      "sha256": "1fbacd1c092fdf7e61285e1b4f6838eb8eabca353769757f6b8b91ef2f33e3dd"
+    },
+    {
+      "path": "docs/investor/due-diligence.md",
+      "bytes": 7281,
+      "sha256": "3966dc29c710e4ed97fdf578458116d63c3da87fcddcac5a3fcb8e5ebb62b573"
+    },
+    {
+      "path": "docs/investor/fundraising.md",
+      "bytes": 5704,
+      "sha256": "5146d2e68b834134023d4cc04214aab4089026597fa839423a3bcf5d8d9125c1"
+    },
+    {
+      "path": "docs/investor/cap-table.md",
+      "bytes": 4834,
+      "sha256": "59208f4a051f227cbd5a9ccdb22d1ea2831090449152bfc499cd19cde2ef51f1"
+    },
+    {
+      "path": "docs/investor/pitch-deck.md",
+      "bytes": 8085,
+      "sha256": "120c19e2f7194c0e0c3fef9f9f1f684679b2ecbd05cedabc4954aea8b1a35b32"
+    },
+    {
+      "path": "docs/business/business-plan.md",
+      "bytes": 8373,
+      "sha256": "656c9eb3d562b63066fc7e105c16716385ff30471e16fb117e648d74375cdae0"
+    },
+    {
+      "path": "docs/business/review-response.md",
+      "bytes": 9268,
+      "sha256": "b8eef3c7f61030d63a1c0ff9dd6abeee7435c853265fa1ff51e362e4fc32ad0a"
+    },
+    {
+      "path": "docs/business/sales.md",
+      "bytes": 3566,
+      "sha256": "c5ebeed60a3227617524f971c2a94e234c059daa037544aa65125153498adb23"
+    },
+    {
+      "path": "docs/business/marketing.md",
+      "bytes": 5913,
+      "sha256": "6423bc66fce4f58c8c1b570e31ae8db882eb8c4a204e4534ccfa03aa2be0a742"
+    },
+    {
+      "path": "docs/business/financial-model.md",
+      "bytes": 15721,
+      "sha256": "9e1f1b7736b2c09bb78c944d9790a8cfc76b6bc77804426f69ae9ab8f0f57668"
+    },
+    {
+      "path": "docs/business/pricing.md",
+      "bytes": 4304,
+      "sha256": "ddab8af9634b5de19b6840a02cfdd01336e0e2843b52d14897f60bae1360af3b"
+    },
+    {
+      "path": "docs/business/executive-summary.md",
+      "bytes": 10124,
+      "sha256": "062470e4ab309b5bf28717bdf8a4d297d5dcef01be02229b49cc6b30fe0aa206"
+    },
+    {
+      "path": "docs/business/risk-register.md",
+      "bytes": 16060,
+      "sha256": "130e920992cb2855ab77604bb6c75c6f06c29deae67c5e0d4a8b202b4d36d4e4"
+    },
+    {
+      "path": "docs/business/market-research.md",
+      "bytes": 10292,
+      "sha256": "80a29ca6fc4119ba7c25136cffc3bc914eab88a2035915305ecaf31351586647"
+    },
+    {
+      "path": "docs/business/fundraising.md",
+      "bytes": 2537,
+      "sha256": "a73b1aef89378b82833f97c561cf825401af831b2e05055cd7d6a5485dc18ae4"
+    },
+    {
+      "path": "docs/legal/tos.md",
+      "bytes": 6422,
+      "sha256": "80270e6a7c115a272969a4fdbdfd52095b8c18e068c2164bc6f615708f793055"
+    },
+    {
+      "path": "docs/legal/privacy.md",
+      "bytes": 6243,
+      "sha256": "f796f41155b5d6b331e2f2ae11f6405816766cfef539e753dc28a0c6d8752091"
+    },
+    {
+      "path": "docs/legal/compliance.md",
+      "bytes": 7132,
+      "sha256": "df7e658de4bc23feee7ad91b0a954fe6612516d18b5a896b087e1ec94b20cefb"
+    },
+    {
+      "path": "docs/roadmap/v1.md",
+      "bytes": 5288,
+      "sha256": "a2c551067a93e426f4bf2e72d89ab68184a804d99ad27f19215ad3fe2c0d4b16"
+    },
+    {
+      "path": "docs/roadmap/enterprise.md",
+      "bytes": 6323,
+      "sha256": "a17065dfe96af2eda6cc0fed1ce7acfa0b2ad72538c18c7a284e7daf36672980"
+    },
+    {
+      "path": "docs/roadmap/mvp.md",
+      "bytes": 5848,
+      "sha256": "7fac5968b47078d87f9a350e63af5b2ad0c329ec85da8c863130343826534d56"
+    },
+    {
+      "path": "docs/operations/runbooks.md",
+      "bytes": 10056,
+      "sha256": "ef183c11d6e7c757857a2fc44757e1cbbd2bead8dabdc2e6dc7f6e0b065cd6e8"
+    },
+    {
+      "path": "docs/operations/incident-response.md",
+      "bytes": 6916,
+      "sha256": "1a11712e50a505f75b5e3953079a6ef899c9d2549b1a83ef8687cf6d92cb696a"
+    },
+    {
+      "path": "docs/operations/hiring.md",
+      "bytes": 6288,
+      "sha256": "1e2d5fadc8b82b4d1d0d94fe99cc7084e426ec44a94281cb23924d7063980807"
+    },
+    {
+      "path": "docs/engineering/testing.md",
+      "bytes": 5655,
+      "sha256": "874cb2dfdeab3ad44d69c7b1f4eb3db57e2082e047f0b541ba945597a144f76d"
+    },
+    {
+      "path": "docs/engineering/tdd.md",
+      "bytes": 8521,
+      "sha256": "d6fc61687140d26f7ee4478cd0de799df1a63c410159d6fbbb8129b6d3bda658"
+    },
+    {
+      "path": "docs/engineering/coding-standards.md",
+      "bytes": 6334,
+      "sha256": "996a21aca09be5e5c9e7e8c9bab0ed1ab82c7a014a18871d1e3f9c41a33252b6"
+    },
+    {
+      "path": "docs/engineering/api.md",
+      "bytes": 7422,
+      "sha256": "087e7c29310b8d2ec6c60280c7bab974c29f65c74a363bdd99855d247a01d86a"
+    },
+    {
+      "path": "docs/engineering/ci-cd.md",
+      "bytes": 4954,
+      "sha256": "0a2e8cc5feef7dbb50b986a6d03c6494e013846a01e9835762e862baa925d97c"
+    },
+    {
+      "path": "docs/product/ux.md",
+      "bytes": 3772,
+      "sha256": "de47745c9cb4a40091416078486e05cb616369328df45707ac2b92d52e85d503"
+    },
+    {
+      "path": "docs/product/prd.md",
+      "bytes": 10196,
+      "sha256": "450e02c3baee57ab5aca76b831d228fed36f5e7546a32a7e05994ab2eb3caafe"
+    },
+    {
+      "path": "docs/product/roadmap.md",
+      "bytes": 3331,
+      "sha256": "fd9630c7b9e0f679762b3ba64b8915f870310007fe996e4608b5547bf854cd17"
+    },
+    {
+      "path": "docs/product/personas.md",
+      "bytes": 4955,
+      "sha256": "d5d0417a03cf37c208a40693ddc6a4bbeb67e665528ba5345db14929bbae944a"
+    },
+    {
+      "path": "docs/architecture/infrastructure.md",
+      "bytes": 9756,
+      "sha256": "c297c40774ab8bd44388e847d207f6d5fb9e7ed87094e7be113e25e091e318e7"
+    },
+    {
+      "path": "docs/architecture/security.md",
+      "bytes": 7728,
+      "sha256": "cf5d7c98b80fb038c591a07c268aa23a946b84f0b9e61b127482d2c5c681ae7a"
+    },
+    {
+      "path": "docs/architecture/system-design.md",
+      "bytes": 13941,
+      "sha256": "770d05d93cf8776e536137dce044783013c721e1d0b7918c66fb739ef4cefeaa"
+    },
+    {
+      "path": "docs/architecture/ai-architecture.md",
+      "bytes": 25954,
+      "sha256": "9387eae77a78987dd75a02c0cf916b76b7e3236e89cb1e3aba6ba828d8e3e540"
+    },
+    {
+      "path": "docs/architecture/observability.md",
+      "bytes": 6202,
+      "sha256": "8d3429c5575a61ade339f17252c4f5b7070a2460a5d1edf97e5c8c7933d620d5"
+    },
+    {
+      "path": "docs/architecture/threat-model.md",
+      "bytes": 7550,
+      "sha256": "10147972d88cb0d125d72209071a7c581e724a299ae367933e91a2b8428c30b4"
+    }
+  ],
+  "skipped_same": [],
+  "conflicts": [],
+  "unsafe_members": [],
+  "standalone_review_matches_tar": true
+}

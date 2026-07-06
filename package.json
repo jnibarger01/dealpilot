@@ -1,0 +1,20 @@
+{
+  "name": "dealpilot-mvp",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "DealPilot MVP modular monolith: evidence-first verification engine.",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "npm run build && node --test tests/*.test.mjs",
+    "test:unit": "npm run build && node --test tests/domain.test.mjs tests/ledger-review.test.mjs",
+    "test:integration": "npm run build && node --test tests/vertical-slice.test.mjs tests/api-ui.test.mjs tests/endpoints-completeness.test.mjs",
+    "lint": "node tools/lint.mjs && bash tools/lint-docs.sh",
+    "format:check": "prettier --check \"{apps,packages,tests,tools}/**/*.{ts,js,mjs,json,md}\" package.json tsconfig.json",
+    "verify": "npm run format:check && npm run lint && npm run typecheck && npm run test:unit && npm run test:integration"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}
