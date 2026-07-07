@@ -1,17 +1,10 @@
 export type DealKind = "real_estate" | "smb";
 export type ClaimStatus =
-  | "VERIFIED"
-  | "CORROBORATED"
-  | "REPORTED"
-  | "CONTRADICTED"
-  | "UNKNOWN";
+  "VERIFIED" | "CORROBORATED" | "REPORTED" | "CONTRADICTED" | "UNKNOWN";
 export type Materiality = "blocking" | "significant" | "contextual";
 export type SourceTier = "A" | "B" | "C" | "D";
 export type EvidenceMethod =
-  | "api"
-  | "licensed"
-  | "user_supplied"
-  | "manual_review";
+  "api" | "licensed" | "user_supplied" | "manual_review";
 export type EvidenceSupport = "support" | "conflict" | "context";
 export type RunState =
   | "queued"
@@ -42,9 +35,7 @@ export type ClaimType =
 
 export type JsonPrimitive = string | number | boolean | null;
 export type JsonValue =
-  | JsonPrimitive
-  | JsonValue[]
-  | { readonly [key: string]: JsonValue };
+  JsonPrimitive | JsonValue[] | { readonly [key: string]: JsonValue };
 
 export interface SourceSpan {
   artifactSha256: string;
@@ -155,7 +146,7 @@ export interface Memo {
 }
 
 export interface CitationCheckResult {
-  passed: boolean;
+  ok: boolean;
   errors: string[];
 }
 

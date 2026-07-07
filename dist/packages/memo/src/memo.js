@@ -134,6 +134,6 @@ export function citationCheck(memo) {
             errors.push(`Missing count for ${status}.`);
         }
     }
-    return { passed: errors.length === 0, errors };
+    return { ok: errors.length === 0, errors };
 }
 //# sourceMappingURL=memo.js.map

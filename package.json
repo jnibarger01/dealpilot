@@ -16,5 +16,9 @@
   },
   "engines": {
     "node": ">=22"
+  },
+  "devDependencies": {
+    "prettier": "^3.9.4",
+    "typescript": "^6.0.3"
   }
 }

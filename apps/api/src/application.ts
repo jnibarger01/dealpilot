@@ -20,6 +20,7 @@ import { computeValuation } from "../../../packages/adjudication/src/valuation.j
 import { citationCheck, composeMemo } from "../../../packages/memo/src/memo.js";
 import {
   appendLedgerEvent,
+  cloneLedgerEvents,
   exportJsonl,
   jsonValue,
   verifyLedger,
@@ -288,10 +289,10 @@ export function createMvpApplication(
     });
     append(
       deal.id,
-      check.passed ? "CitationCheckPassed" : "CitationCheckFailed",
+      check.ok ? "CitationCheckSatisfied" : "CitationCheckFailed",
       { memoId, errors: check.errors },
     );
-    if (check.passed) {
+    if (check.ok) {
       append(deal.id, "MemoPublished", { memoId });
     }
     const verify = verifyLedger(store.ledgers.get(deal.id) ?? []);
@@ -301,7 +302,7 @@ export function createMvpApplication(
     };
     store.memos.set(finalMemo.id, finalMemo);
 
-    const state = check.passed
+    const state = check.ok
       ? valuation.status === "REFUSED"
         ? "refused"
         : "published"
@@ -397,7 +398,7 @@ export function createMvpApplication(
       return evidence;
     },
     exportLedger(streamId: string): LedgerExport {
-      const events = store.ledgers.get(streamId) ?? [];
+      const events = cloneLedgerEvents(store.ledgers.get(streamId) ?? []);
       return {
         events,
         jsonl: exportJsonl(events),

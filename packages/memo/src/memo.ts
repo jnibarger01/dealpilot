@@ -178,5 +178,5 @@ export function citationCheck(memo: Memo): CitationCheckResult {
       errors.push(`Missing count for ${status}.`);
     }
   }
-  return { passed: errors.length === 0, errors };
+  return { ok: errors.length === 0, errors };
 }

@@ -31,7 +31,7 @@ export function appendLedgerEvent(existing, input) {
     const eventWithoutHash = {
         streamId: input.streamId,
         type: input.type,
-        payload: input.payload,
+        payload: jsonValue(input.payload),
         actor: input.actor,
         occurredAt: input.occurredAt ?? new Date().toISOString(),
         seq: existing.length + 1,
@@ -40,10 +40,15 @@ export function appendLedgerEvent(existing, input) {
     const withOptional = {
         ...eventWithoutHash,
         ...(input.promptHash ? { promptHash: input.promptHash } : {}),
-        ...(input.evidenceHashes ? { evidenceHashes: input.evidenceHashes } : {}),
+        ...(input.evidenceHashes
+            ? { evidenceHashes: [...input.evidenceHashes] }
+            : {}),
     };
     const event = { ...withOptional, hash: hashEvent(withOptional) };
     return [...existing, event];
+}
+export function cloneLedgerEvents(events) {
+    return JSON.parse(JSON.stringify(events));
 }
 export function verifyLedger(events) {
     let previousHash = GENESIS_HASH;

@@ -106,7 +106,7 @@ export interface Memo {
     generatedAt: string;
 }
 export interface CitationCheckResult {
-    passed: boolean;
+    ok: boolean;
     errors: string[];
 }
 export interface LedgerEventInput {

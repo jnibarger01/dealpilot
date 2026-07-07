@@ -4,7 +4,7 @@ import { createManualEvidence, evidenceForClaim, } from "../../../packages/evide
 import { adjudicateClaim } from "../../../packages/adjudication/src/adjudicator.js";
 import { computeValuation } from "../../../packages/adjudication/src/valuation.js";
 import { citationCheck, composeMemo } from "../../../packages/memo/src/memo.js";
-import { appendLedgerEvent, exportJsonl, jsonValue, verifyLedger, } from "../../../packages/ledger/src/ledger.js";
+import { appendLedgerEvent, cloneLedgerEvents, exportJsonl, jsonValue, verifyLedger, } from "../../../packages/ledger/src/ledger.js";
 export function createMvpApplication(options = {}) {
     const now = options.now ?? (() => new Date().toISOString());
     const store = {
@@ -131,8 +131,8 @@ export function createMvpApplication(options = {}) {
             memoId,
             sectionCount: memo.sections.length,
         });
-        append(deal.id, check.passed ? "CitationCheckPassed" : "CitationCheckFailed", { memoId, errors: check.errors });
-        if (check.passed) {
+        append(deal.id, check.ok ? "CitationCheckSatisfied" : "CitationCheckFailed", { memoId, errors: check.errors });
+        if (check.ok) {
             append(deal.id, "MemoPublished", { memoId });
         }
         const verify = verifyLedger(store.ledgers.get(deal.id) ?? []);
@@ -141,7 +141,7 @@ export function createMvpApplication(options = {}) {
             ledger: { ...memo.ledger, headHash: verify.headHash ?? "" },
         };
         store.memos.set(finalMemo.id, finalMemo);
-        const state = check.passed
+        const state = check.ok
             ? valuation.status === "REFUSED"
                 ? "refused"
                 : "published"
@@ -219,7 +219,7 @@ export function createMvpApplication(options = {}) {
             return evidence;
         },
         exportLedger(streamId) {
-            const events = store.ledgers.get(streamId) ?? [];
+            const events = cloneLedgerEvents(store.ledgers.get(streamId) ?? []);
             return {
                 events,
                 jsonl: exportJsonl(events),

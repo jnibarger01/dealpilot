@@ -21,7 +21,7 @@ Comparable basis: nearby duplex sales
 Lien status: seller says clear title
 `;
 
-test("@ac Slice-1 URL/text artifact -> claims -> UNKNOWN/REFUSED memo -> citation pass -> ledger verify", async () => {
+test("@ac Slice-1 URL/text artifact -> claims -> UNKNOWN/REFUSED memo -> citation check ok -> ledger verify", async () => {
   const app = createMvpApplication({ now: () => "2026-07-06T00:00:00.000Z" });
 
   const deal = await app.createDeal({
@@ -56,11 +56,7 @@ test("@ac Slice-1 URL/text artifact -> claims -> UNKNOWN/REFUSED memo -> citatio
       /Unknowns & How to Close Them/i.test(section.heading),
     ),
   );
-  assert.equal(
-    run.citationCheck.passed,
-    true,
-    run.citationCheck.errors.join("\n"),
-  );
+  assert.equal(run.citationCheck.ok, true, run.citationCheck.errors.join("\n"));
   assert.equal(run.ledgerVerify.valid, true);
 
   const ledgerExport = app.exportLedger(deal.id);

@@ -88,9 +88,171 @@ test("@ac FR-5.2 valuation refuses when blocking claims remain UNKNOWN or CONTRA
   };
   const valuation = computeValuation([unknownBlocking]);
   assert.equal(valuation.status, "REFUSED");
-  assert.equal(valuation.blockers.length, 1);
-  assert.equal(valuation.blockers[0].claimId, baseClaim.id);
-  assert.match(valuation.blockers[0].unblockText, /upload|evidence|verify/i);
+  const noiBlocker = valuation.blockers.find(
+    (blocker) => blocker.claimId === baseClaim.id,
+  );
+  assert.ok(noiBlocker);
+  assert.match(noiBlocker.unblockText, /upload|evidence|verify/i);
+});
+
+test("@ac FR-5.2 valuation refuses when required blocking claim types are absent", () => {
+  const presentBlockingClaims = [
+    {
+      ...baseClaim,
+      id: "clm_tax_verified",
+      type: "financial.taxes",
+      status: "VERIFIED",
+      evidenceRefs: ["evd_tax"],
+    },
+    {
+      ...baseClaim,
+      id: "clm_lien_verified",
+      type: "legal.lien_status",
+      proposition: {
+        subject: "property",
+        predicate: "lien_status",
+        value: "clear",
+        unit: "TEXT",
+        period: "current",
+      },
+      status: "VERIFIED",
+      evidenceRefs: ["evd_lien"],
+    },
+    {
+      ...baseClaim,
+      id: "clm_flood_verified",
+      type: "environmental.flood_zone",
+      proposition: {
+        subject: "property",
+        predicate: "flood_zone",
+        value: "AE",
+        unit: "TEXT",
+        period: "current",
+      },
+      status: "VERIFIED",
+      evidenceRefs: ["evd_flood"],
+    },
+  ];
+
+  const valuation = computeValuation(presentBlockingClaims);
+  assert.equal(valuation.status, "REFUSED");
+  assert.equal(valuation.rangeMinor, null);
+  assert.ok(
+    valuation.blockers.some(
+      (blocker) =>
+        blocker.claimType === "financial.noi" && blocker.status === "UNKNOWN",
+    ),
+  );
+});
+
+test("@ac FR-5.3 valuation refuses without supported list-price anchor", () => {
+  const requiredBlocking = [
+    {
+      ...baseClaim,
+      id: "clm_noi_verified",
+      type: "financial.noi",
+      status: "VERIFIED",
+      evidenceRefs: ["evd_noi"],
+    },
+    {
+      ...baseClaim,
+      id: "clm_rent_verified",
+      type: "financial.rent_roll",
+      proposition: {
+        subject: "property",
+        predicate: "monthly_rent_roll",
+        value: 26000,
+        unit: "USD_MONTHLY",
+        period: "current",
+      },
+      status: "VERIFIED",
+      evidenceRefs: ["evd_rent"],
+    },
+    {
+      ...baseClaim,
+      id: "clm_tax_verified",
+      type: "financial.taxes",
+      status: "VERIFIED",
+      evidenceRefs: ["evd_tax"],
+    },
+    {
+      ...baseClaim,
+      id: "clm_lien_verified",
+      type: "legal.lien_status",
+      proposition: {
+        subject: "property",
+        predicate: "lien_status",
+        value: "clear",
+        unit: "TEXT",
+        period: "current",
+      },
+      status: "VERIFIED",
+      evidenceRefs: ["evd_lien"],
+    },
+    {
+      ...baseClaim,
+      id: "clm_flood_verified",
+      type: "environmental.flood_zone",
+      proposition: {
+        subject: "property",
+        predicate: "flood_zone",
+        value: "AE",
+        unit: "TEXT",
+        period: "current",
+      },
+      status: "VERIFIED",
+      evidenceRefs: ["evd_flood"],
+    },
+  ];
+
+  const missingAnchor = computeValuation(requiredBlocking);
+  assert.equal(missingAnchor.status, "REFUSED");
+  assert.ok(
+    missingAnchor.blockers.some(
+      (blocker) => blocker.claimType === "financial.list_price",
+    ),
+  );
+
+  const reportedAnchor = computeValuation([
+    ...requiredBlocking,
+    {
+      ...baseClaim,
+      id: "clm_price_reported",
+      type: "financial.list_price",
+      materiality: "contextual",
+      proposition: {
+        subject: "property",
+        predicate: "list_price",
+        value: 900000,
+        unit: "USD",
+        period: "current",
+      },
+      status: "REPORTED",
+      evidenceRefs: [],
+    },
+  ]);
+  assert.equal(reportedAnchor.status, "REFUSED");
+
+  const supportedAnchor = computeValuation([
+    ...requiredBlocking,
+    {
+      ...baseClaim,
+      id: "clm_price_verified",
+      type: "financial.list_price",
+      materiality: "contextual",
+      proposition: {
+        subject: "property",
+        predicate: "list_price",
+        value: 900000,
+        unit: "USD",
+        period: "current",
+      },
+      status: "VERIFIED",
+      evidenceRefs: ["evd_price"],
+    },
+  ]);
+  assert.equal(supportedAnchor.status, "COMPLETED");
+  assert.deepEqual(supportedAnchor.rangeMinor, [82800000, 94500000]);
 });
 
 test("@ac FR-6.1 citation checker blocks uncited factual prose and permits cited memo sections", () => {
@@ -105,7 +267,7 @@ test("@ac FR-6.1 citation checker blocks uncited factual prose and permits cited
     generatedAt: "2026-07-06T00:00:00.000Z",
   });
   const result = citationCheck(memo);
-  assert.equal(result.passed, true, result.errors.join("\n"));
+  assert.equal(result.ok, true, result.errors.join("\n"));
 
   const broken = {
     ...memo,
@@ -120,7 +282,7 @@ test("@ac FR-6.1 citation checker blocks uncited factual prose and permits cited
     ],
   };
   const brokenResult = citationCheck(broken);
-  assert.equal(brokenResult.passed, false);
+  assert.equal(brokenResult.ok, false);
   assert.match(brokenResult.errors.join("\n"), /uncited/i);
 });
 

@@ -92,4 +92,11 @@ test("@ac FR-7/FR-8 ledger records prompt hash, evidence hashes, reviewer approv
     overrideEvent.payload.reason,
     "Manual evidence was validated as received but not authoritative.",
   );
+
+  exported.events[0].payload = { dealId: "mutated_export_payload" };
+  const afterExternalMutation = app.exportLedger(deal.id);
+  assert.equal(afterExternalMutation.verify.valid, true);
+  assert.notDeepEqual(afterExternalMutation.events[0].payload, {
+    dealId: "mutated_export_payload",
+  });
 });

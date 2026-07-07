@@ -3,12 +3,17 @@ import type {
   Valuation,
   ValuationBlocker,
 } from "../../contracts/src/index.js";
-import { getClaimDefinition } from "../../contracts/src/index.js";
+import {
+  CLAIM_DEFINITIONS,
+  getClaimDefinition,
+} from "../../contracts/src/index.js";
 
 const blockingUnsupported = new Set(["UNKNOWN", "CONTRADICTED", "REPORTED"]);
+const valuationDriverSupported = new Set(["VERIFIED", "CORROBORATED"]);
 
 export function computeValuation(claims: readonly Claim[]): Valuation {
-  const blockers: ValuationBlocker[] = claims
+  const presentClaimTypes = new Set(claims.map((claim) => claim.type));
+  const unsupportedBlockers: ValuationBlocker[] = claims
     .filter(
       (claim) =>
         claim.materiality === "blocking" &&
@@ -21,6 +26,41 @@ export function computeValuation(claims: readonly Claim[]): Valuation {
       unblockText: getClaimDefinition(claim.type).unblockText,
     }));
 
+  const missingBlockers: ValuationBlocker[] = CLAIM_DEFINITIONS.filter(
+    (definition) =>
+      definition.materiality === "blocking" &&
+      !presentClaimTypes.has(definition.type),
+  ).map((definition) => ({
+    claimId: `missing:${definition.type}`,
+    claimType: definition.type,
+    status: "UNKNOWN",
+    unblockText: definition.unblockText,
+  }));
+
+  const blockers = [...unsupportedBlockers, ...missingBlockers];
+
+  const listPriceClaim = claims.find(
+    (claim) =>
+      claim.type === "financial.list_price" &&
+      typeof claim.proposition.value === "number",
+  );
+  const supportedListPriceClaim = claims.find(
+    (claim) =>
+      claim.type === "financial.list_price" &&
+      typeof claim.proposition.value === "number" &&
+      valuationDriverSupported.has(claim.status) &&
+      claim.evidenceRefs.length > 0,
+  );
+
+  if (!supportedListPriceClaim) {
+    blockers.push({
+      claimId: listPriceClaim?.id ?? "missing:financial.list_price",
+      claimType: "financial.list_price",
+      status: listPriceClaim?.status ?? "UNKNOWN",
+      unblockText: getClaimDefinition("financial.list_price").unblockText,
+    });
+  }
+
   if (blockers.length > 0) {
     return {
       status: "REFUSED",
@@ -32,15 +72,13 @@ export function computeValuation(claims: readonly Claim[]): Valuation {
     };
   }
 
-  const listPriceClaim = claims.find(
-    (claim) =>
-      claim.type === "financial.list_price" &&
-      typeof claim.proposition.value === "number",
-  );
-  const anchor =
-    typeof listPriceClaim?.proposition.value === "number"
-      ? listPriceClaim.proposition.value
-      : 400000;
+  if (!supportedListPriceClaim) {
+    throw new Error(
+      "Supported valuation anchor missing after blocker evaluation.",
+    );
+  }
+
+  const anchor = Number(supportedListPriceClaim.proposition.value);
   const low = Math.round(anchor * 0.92 * 100);
   const high = Math.round(anchor * 1.05 * 100);
   return {

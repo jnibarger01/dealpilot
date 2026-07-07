@@ -4,9 +4,10 @@ import { join } from "node:path";
 const sourceRoots = ["apps", "packages"];
 const roots = [...sourceRoots, "tests", "tools"];
 const banned = [
-  /\bPursue\b/i,
-  /\bPass\b/i,
-  /\bBuy now\b/i,
+  /\bbuy\b/i,
+  /\bsell\b/i,
+  /\bpass\b/i,
+  /\bpursue\b/i,
   /\brecommend(?:ation|ed|s)?\b/i,
   /hallucination-free/i,
   /never invent facts/i,
